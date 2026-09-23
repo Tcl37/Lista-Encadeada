@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct No{
+	char modelo[20];
+	float valor;
+	float ipva;
+	struct carro *prox;
+}carro;
+
+carro criarobj(char modeloP[20], float valorP){
+	carro *novocar = (carro*) malloc(sizeof(carro));
+	if(novocar == NULL){
+		printf("Erro de memoria !!!");
+		exit(1);
+	}
+	strcpy(novocar->modelo,modeloP);
+	novocar->valor = valorP;
+	novocar->ipva = 0.0;
+	nococar->prox = NULL;
+	printf("Lista criada!!!");
+	return novocar;
+}
+void inseririnicio(carro**lista,char modeloP[20], float valorP){
+	carro *novocar = criarobj(modeloP, valorP);
+	if(valorP <=40000.0){
+		novocar->ipva = 0.0;}
+	else if(valorP <= 70000.0){
+		novocar->ipva = valorP*2/100;
+	}else{
+		novocar->ipva = valorP*3/100;
+	}
+	novocar->prox = *lista;
+	*lista = novocar;
+}
+void inserirfim(carro**lista,char modeloP[20], float valorP){
+	carro *novocar = criarobj(modeloP, valorP);
+	if(*lista == NULL){
+		*lista = novocar;
+	}else{
+		carro *temp = *lista;
+		while(temp->prox != NULL){ //pesquisa se chegou ao final
+			temp = temp->prox; //vai pulando os elementos ate achar
+		}
+		temp->prox = novocar;
+	}
+}
+	
+void imprimir(carro *lista){
+	while (lista != NULL){
+		printf("O modelo: %s", lista->modelo);
+		printf("\nO valor: R$ %.2f", lista->valor);
+		printf("\nO valor do IPVA: R$ %.2f", lista
+		printf("\n-----------------\n");
+		lista = lista->prox;
+	}
+
+	
+}
+carro* pesquisar(carro *lista, char modeloP[20]){
+	while(lista != NULL){
+		if(strcmp(lista->modeloP)==0){
+			return lista;
+		}
+		lista = lista->prox;
+	}
+}
+void alterar(carro *lista, char modeloAntigo[20],char modeloP[20],float valorP){
+	carro *obj = pesquisar(lista, modeloAntigo);
+	if(obj != NULL){
+		strcpy(obj->modelo = modeloP);
+		obj->valor = valorP;
+		//add o if do ipva
+		printf("Objeto alterado!!");
+	}else{
+		printf("Objeto nao encontrado!!");
+	}
+}
+main(){
+	carro *lista = NULL;
+	inserirfim(&lista,"Gol",40000.0);
+	inserirfim(&lista,"Civic",100000.0);
+	inseririnicio(&lista, "Dolphin",120000.0);
+	imprimir(lista);
+	carro *busca = pesquisar(lista, "Civic");
+	if(busca != NULL){
+		printf("\nObjeto encontrado: carro: %s", busca->modelo);
+	}else{
+		printf("\nObjeto nao encontrado");
+	}
+	alterar(lista,"Civic","Opala", 90000.0);
+	imprimir(lista);
+}
