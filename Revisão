@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct No {
+    char nome[80];
+    float salario;
+    float bonus;
+    struct No *prox;
+} Funcionario;
+
+
+Funcionario* criarobj(char nomeI[20], float salarioI) {
+
+    Funcionario *novointegrante = malloc(sizeof(Funcionario));
+
+    if(novointegrante == NULL) {
+        printf("Erro de memória!");
+        exit(1);
+    }
+
+    strcpy(novointegrante->nome, nomeI);
+    novointegrante->salario = salarioI;
+    novointegrante->bonus = 0;
+    novointegrante->prox = NULL;
+
+    return novointegrante;
+}
+
+
+void inseririnicio(Funcionario **lista, char nomeI[20], float salarioI) {
+
+    Funcionario *novointegrante = criarobj(nomeI, salarioI);
+
+    if(salarioI <= 2000) {
+        novointegrante->bonus = salarioI * 0.05;
+    }
+
+    novointegrante->prox = *lista;
+    *lista = novointegrante;
+}
