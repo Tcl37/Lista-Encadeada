@@ -35,7 +35,218 @@ void inseririnicio(Funcionario **lista, char nomeI[20], float salarioI) {
     if(salarioI <= 2000) {
         novointegrante->bonus = salarioI * 0.05;
     }
-
+    else if(2000 < salarioI <= 5000){
+        novointegrante->bonus = salarioI * 0.1;
+}
+    else{
+        novointegrante->bonus = salarioI * 0.15;
+}
     novointegrante->prox = *lista;
     *lista = novointegrante;
 }
+
+void inserirFim(Funcionario **lista, char nomeI[20], float salarioI) {
+    if(*lista == NULL){
+        Funcionario *novointegrante = criarobj(nomeI, salarioI);
+
+        if(salarioI <= 2000) {
+        novointegrante->bonus = salarioI * 0.05;
+    }
+        else if(2000 < salarioI && salarioI <= 5000){
+        novointegrante->bonus = salarioI * 0.1;
+    }
+        else{
+        novointegrante->bonus = salarioI * 0.15;
+    }
+    novointegrante->prox = *lista;
+    *lista = novointegrante;
+}
+else{
+    Funcionario *temp = lista;
+    while(temp -> prox != NULL){
+        temp = temp -> prox;
+}
+    temp -> prox = novointegrante;
+
+
+void imprimirlista(Funcionario *lista){
+    if(lista == NULL){
+    printf("Erro! Nenhum funcionario na lista");
+    else{
+    Funcionario *temp = lista
+    while(temp != NULL){
+    printf("Funcionario: %s", temp -> nome);
+    printf("Salário: %.2f", temp -> salario);
+    printf("Bonus: %.2f", temp -> bonus);
+    printf(<------------------------------------------>);
+    temp = temp -> prox;
+}
+
+Funcionario* buscarfuncionario(Funcionario *lista, char nomeB[80]) {
+
+    Funcionario *temp = lista;
+
+    while(temp != NULL) {
+
+        if(strcmp(nomeB, temp->nome) == 0) {
+            return temp;
+        }
+
+        temp = temp->prox;
+    }
+
+    return NULL;
+}
+
+void alterar(Funcionario *lista, char nomeB[80], char nomeN[80], float salarioN) {
+
+    Funcionario *obj = buscarfuncionario(lista, nomeB);
+
+    if(obj != NULL) {
+
+        strcpy(obj->nome, nomeN);
+        obj->salario = salarioN;
+
+        if(salarioN <= 2000) {
+            obj->bonus = salarioN * 0.05;
+        }
+        else if(salarioN > 2000 && salarioN <= 5000) {
+            obj->bonus = salarioN * 0.10;
+        }
+        else {
+            obj->bonus = salarioN * 0.15;
+        }
+
+        printf("Funcionario alterado com sucesso!");
+    }
+    else {
+        printf("Funcionario nao encontrado!");
+    }
+}
+int main() {
+
+    Funcionario *lista = NULL;
+
+    int i;
+    char nomeM[80];
+    float salarioM;
+
+    do {
+
+        printf("\n\n================ MENU ================\n");
+        printf("1 - Adicionar funcionario no fim\n");
+        printf("2 - Adicionar funcionario no inicio\n");
+        printf("3 - Imprimir a lista\n");
+        printf("4 - Buscar por nome\n");
+        printf("5 - Alterar informacoes\n");
+        printf("0 - Sair\n");
+        printf("======================================\n");
+
+        printf("Digite uma opcao: ");
+        scanf("%d", &i);
+
+        switch(i) {
+
+            case 1:
+
+                printf("\nDigite o nome: ");
+                scanf(" %[^\n]", nomeM);
+
+                printf("Digite o salario: ");
+                scanf("%f", &salarioM);
+
+                inserirFim(&lista, nomeM, salarioM);
+
+                printf("\nFuncionario adicionado no fim!");
+
+                break;
+
+
+            case 2:
+
+                printf("\nDigite o nome: ");
+                scanf(" %[^\n]", nomeM);
+
+                printf("Digite o salario: ");
+                scanf("%f", &salarioM);
+
+                inserirInicio(&lista, nomeM, salarioM);
+
+                printf("\nFuncionario adicionado no inicio!");
+
+                break;
+
+
+            case 3:
+
+                printf("\n========== FUNCIONARIOS ==========\n");
+
+                imprimirlista(lista);
+
+                break;
+
+
+            case 4:
+
+                printf("\nDigite o nome que deseja buscar: ");
+                scanf(" %[^\n]", nomeM);
+
+                Funcionario *busca = buscarfuncionario(lista, nomeM);
+
+                if(busca != NULL) {
+
+                    printf("\nFuncionario encontrado!\n");
+                    printf("Nome: %s\n", busca->nome);
+                    printf("Salario: %.2f\n", busca->salario);
+                    printf("Bonus: %.2f\n", busca->bonus);
+
+                }
+                else {
+                    printf("\nFuncionario nao encontrado!");
+                }
+
+                break;
+
+
+            case 5: {
+
+                char nomeAntigo[80];
+                char nomeNovo[80];
+                float novoSalario;
+
+                printf("\nDigite o nome do funcionario que deseja alterar: ");
+                scanf(" %[^\n]", nomeAntigo);
+
+                printf("Digite o novo nome: ");
+                scanf(" %[^\n]", nomeNovo);
+
+                printf("Digite o novo salario: ");
+                scanf("%f", &novoSalario);
+
+                alterar(lista, nomeAntigo, nomeNovo, novoSalario);
+
+                break;
+            }
+
+
+            case 0:
+
+                printf("\nPrograma encerrado!\n");
+
+                break;
+
+
+            default:
+
+                printf("\nOpcao invalida!");
+
+        }
+
+    } while(i != 0);
+
+    return 0;
+}
+    
+    
+
+    
