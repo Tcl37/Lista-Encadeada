@@ -2,26 +2,338 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct No{
-    char nome[80];
-    int telefone;
-    int idade;
+typedef struct No {
+    char nome[30];
+    float preco;
+    int estoque;
     struct No *prox;
-}Paciente;
+} Produto;
 
-Paciente *novoobj(char nomeP[80],int telefoneP,int idadeP){
-  novoPaciente* Paciente = malloc(sizeof(Paciente));
-  if(novoPaciente = NULL){
-    printf("Erro de Memória!");
-    exit(1);
+
+// =========================
+// CRIAR PRODUTO
+// =========================
+Produto* crirobj(char nomeI[30], float precoI, int estoqueI) {
+
+    Produto *novoproduto = malloc(sizeof(Produto));
+
+    if (novoproduto == NULL) {
+        printf("Erro de memoria!\n");
+        exit(1);
     }
-  strcpy(novoPaciente -> nome = nomeP);
-  novoPaciente -> telefone = telefoneP;
-  novoPaciente -> idade = idadeP;4
-  novoPaciente -> prox = NULL
-  }
-void inserirInicio(Paciente **lista, char nomeP[80], int telefoneP,int idadeP){
-  Paciente *novoPaciente = novoobj(char nomeP[80], int telefoneP,int idadeP)
-  
+
+    strcpy(novoproduto->nome, nomeI);
+    novoproduto->preco = precoI;
+    novoproduto->estoque = estoqueI;
+    novoproduto->prox = NULL;
+
+    return novoproduto;
 }
 
+
+// =========================
+// INSERIR NO INICIO
+// =========================
+void inseririnicio(Produto **lista, char nomeI[30],
+                   float precoI, int estoqueI) {
+
+    Produto *novoproduto = crirobj(nomeI, precoI, estoqueI);
+
+    novoproduto->prox = *lista;
+    *lista = novoproduto;
+
+    printf("\nProduto inserido no inicio!\n");
+}
+
+
+// =========================
+// INSERIR NO FINAL
+// =========================
+void inserirfinal(Produto **lista, char nomeI[30],
+                  float precoI, int estoqueI) {
+
+    Produto *novoproduto = crirobj(nomeI, precoI, estoqueI);
+
+    if (*lista == NULL) {
+
+        *lista = novoproduto;
+    }
+    else {
+
+        Produto *temp = *lista;
+
+        while (temp->prox != NULL) {
+            temp = temp->prox;
+        }
+
+        temp->prox = novoproduto;
+    }
+
+    printf("\nProduto inserido no final!\n");
+}
+
+
+// =========================
+// IMPRIMIR
+// =========================
+void imprimir(Produto *lista) {
+
+    if (lista == NULL) {
+        printf("\nLista vazia!\n");
+        return;
+    }
+
+    printf("\n===== PRODUTOS =====\n");
+
+    while (lista != NULL) {
+
+        printf("\nNome: %s", lista->nome);
+        printf("\nPreco: R$ %.2f", lista->preco);
+        printf("\nEstoque: %d", lista->estoque);
+        printf("\n-------------------------");
+
+        lista = lista->prox;
+    }
+
+    printf("\n");
+}
+
+
+// =========================
+// BUSCAR
+// =========================
+Produto* buscarproduto(Produto *lista, char nomeI[30]) {
+
+    while (lista != NULL) {
+
+        if (strcmp(lista->nome, nomeI) == 0) {
+            return lista;
+        }
+
+        lista = lista->prox;
+    }
+
+    return NULL;
+}
+
+
+// =========================
+// ALTERAR
+// =========================
+void alterarproduto(Produto *lista,
+                    char nomeI[30],
+                    char nomeN[30],
+                    float precoN,
+                    int estoqueN) {
+
+    Produto *produto = buscarproduto(lista, nomeI);
+
+    if (produto != NULL) {
+
+        strcpy(produto->nome, nomeN);
+        produto->preco = precoN;
+        produto->estoque = estoqueN;
+
+        printf("\nProduto alterado com sucesso!\n");
+    }
+    else {
+
+        printf("\nProduto nao encontrado!\n");
+    }
+}
+
+
+// =========================
+// DELETAR
+// =========================
+void deletarproduto(Produto **lista, char nomeI[30]) {
+
+    Produto *atual = *lista;
+    Produto *anterior = NULL;
+
+    while (atual != NULL) {
+
+        if (strcmp(atual->nome, nomeI) == 0) {
+
+            // Se for o primeiro
+            if (anterior == NULL) {
+                *lista = atual->prox;
+            }
+
+            // Se estiver no meio ou no final
+            else {
+                anterior->prox = atual->prox;
+            }
+
+            free(atual);
+
+            printf("\nProduto deletado com sucesso!\n");
+            return;
+        }
+
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    printf("\nProduto nao encontrado!\n");
+}
+
+
+// =========================
+// MAIN
+// =========================
+int main() {
+
+    Produto *lista = NULL;
+
+    int opcao;
+    char nome[30];
+    char nomeNovo[30];
+    float preco;
+    int estoque;
+
+    do {
+
+        printf("\n\n========== MENU ==========\n");
+        printf("1 - Inserir produto no inicio\n");
+        printf("2 - Inserir produto no final\n");
+        printf("3 - Imprimir produtos\n");
+        printf("4 - Buscar produto\n");
+        printf("5 - Alterar produto\n");
+        printf("6 - Deletar produto\n");
+        printf("0 - Sair\n");
+        printf("==========================\n");
+
+        printf("Digite uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+
+            // =========================
+            // INSERIR NO INICIO
+            // =========================
+            case 1:
+
+                printf("\nDigite o nome do produto: ");
+                scanf(" %[^\n]", nome);
+
+                printf("Digite o preco: ");
+                scanf("%f", &preco);
+
+                printf("Digite o estoque: ");
+                scanf("%d", &estoque);
+
+                inseririnicio(&lista, nome, preco, estoque);
+
+                break;
+
+
+            // =========================
+            // INSERIR NO FINAL
+            // =========================
+            case 2:
+
+                printf("\nDigite o nome do produto: ");
+                scanf(" %[^\n]", nome);
+
+                printf("Digite o preco: ");
+                scanf("%f", &preco);
+
+                printf("Digite o estoque: ");
+                scanf("%d", &estoque);
+
+                inserirfinal(&lista, nome, preco, estoque);
+
+                break;
+
+
+            // =========================
+            // IMPRIMIR
+            // =========================
+            case 3:
+
+                imprimir(lista);
+
+                break;
+
+
+            // =========================
+            // BUSCAR
+            // =========================
+            case 4:
+
+                printf("\nDigite o nome do produto: ");
+                scanf(" %[^\n]", nome);
+
+                Produto *busca = buscarproduto(lista, nome);
+
+                if (busca != NULL) {
+
+                    printf("\nProduto encontrado!\n");
+                    printf("Nome: %s\n", busca->nome);
+                    printf("Preco: R$ %.2f\n", busca->preco);
+                    printf("Estoque: %d\n", busca->estoque);
+                }
+                else {
+
+                    printf("\nProduto nao encontrado!\n");
+                }
+
+                break;
+
+
+            // =========================
+            // ALTERAR
+            // =========================
+            case 5:
+
+                printf("\nDigite o nome do produto que deseja alterar: ");
+                scanf(" %[^\n]", nome);
+
+                printf("Digite o novo nome: ");
+                scanf(" %[^\n]", nomeNovo);
+
+                printf("Digite o novo preco: ");
+                scanf("%f", &preco);
+
+                printf("Digite o novo estoque: ");
+                scanf("%d", &estoque);
+
+                alterarproduto(lista, nome, nomeNovo, preco, estoque);
+
+                break;
+
+
+            // =========================
+            // DELETAR
+            // =========================
+            case 6:
+
+                printf("\nDigite o nome do produto que deseja deletar: ");
+                scanf(" %[^\n]", nome);
+
+                deletarproduto(&lista, nome);
+
+                break;
+
+
+            // =========================
+            // SAIR
+            // =========================
+            case 0:
+
+                printf("\nPrograma encerrado!\n");
+
+                break;
+
+
+            default:
+
+                printf("\nOpcao invalida!\n");
+        }
+
+    } while (opcao != 0);
+
+
+    return 0;
+}
