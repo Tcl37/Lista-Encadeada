@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct No{
+    char nome[80];
+    int telefone;
+    int idade;
+    struct No *prox;
+}Paciente;
+
+Paciente *novoobj(char nomeP[80],int telefoneP,int idadeP){
+  novoPaciente* Paciente = malloc(sizeof(Paciente));
+  if(novoPaciente = NULL){
+    printf("Erro de Memória!");
+    exit(1);
+    }
+  strcpy(novoPaciente -> nome = nomeP);
+  novoPaciente -> telefone = telefoneP;
+  novoPaciente -> idade = idadeP;4
+  novoPaciente -> prox = NULL
+  }
+void inserirInicio(Paciente **lista, char nomeP[80], int telefoneP,int idadeP){
+  Paciente *novoPaciente = novoobj(char nomeP[80], int telefoneP,int idadeP)
+  
+}
+
